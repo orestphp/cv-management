@@ -5,7 +5,6 @@
                 <v-card>
                     <v-card-title
                         class="text-h5 lighten-2 alert-title"
-                        v-bind:class="changeDialogColor"
                         id="cv-alert-title"
                     ></v-card-title>
                     <v-card-text class="alert-message" id="cv-alert-message"></v-card-text>
