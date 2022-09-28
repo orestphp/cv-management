@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\GeneralException;
 use App\Models\Cv;
-use App\Models\User;
 use App\Models\Education;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -95,13 +93,14 @@ class EducationService extends BaseService
 
     /**
      * @param  array  $data
+     * @param  Cv  $cv
      *
      * @return array
      */
     public function create(array $data = [], Cv $cv) : array
     {
         $cvEducations = [];
-        if($this->request->get('cvEducations') && $data) {
+        if($data) {
             foreach($data as $k => $v) {
                 $cvEducations[] = Education::create([
                     'institution_name' => $this->request->input("cvEducations.".$k.".institution_name"),

@@ -288,7 +288,6 @@ export default {
         // Save/edit Cv (finish)
         async saveCv() {
             const cvId = parseInt(this.$route.query['id']);
-            if (!cvId) return false;
             this.cv.date_of_birth = this.strDob ? this.strDob : this.cv.date_of_birth;
             let action = cvId ? '/api/cv/' + cvId : '/api/cv';
             this.initCvByIdFromStore(cvId);
