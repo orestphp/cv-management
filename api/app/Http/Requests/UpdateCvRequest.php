@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCvRequest extends FormRequest
 {
@@ -29,7 +30,7 @@ class UpdateCvRequest extends FormRequest
             'cv.surname' => ['string', 'max:255', 'nullable'],
             'cv.middle_name' => ['string', 'max:255', 'nullable'],
             'cv.date_of_birth' => ['string', 'max:255', 'nullable'],
-            'cv.email' => ['email'],
+            'cv.email' => ['required', 'max:255', 'email', 'unique:cv', Rule::unique('cv.email')],
             'cv.phone' => ['string', 'max:255', 'nullable'],
             'cv.avatar' => ['string', 'max:255', 'nullable'],
             'cv.address' => ['string', 'max:255', 'nullable'],

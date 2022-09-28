@@ -289,9 +289,11 @@ export default {
         async saveCv() {
             const cvId = parseInt(this.$route.query['id']);
             this.cv.date_of_birth = this.strDob ? this.strDob : this.cv.date_of_birth;
-            let action = cvId ? '/api/cv/' + cvId : '/api/cv';
-            this.initCvByIdFromStore(cvId);
-            let data = cvId
+            let action = !isNaN(cvId) ? '/api/cv/' + cvId : '/api/cv';
+            if(!isNaN(cvId)) {
+                this.initCvByIdFromStore(cvId);
+            }
+            let data = !isNaN(cvId)
                 ? {
                     cv: this.cv,
                     cvEducations: this.cv.education,
@@ -306,14 +308,14 @@ export default {
                 };
             let self = this;
             // Save all CV
-            await this.$axios.$get('sanctum/csrf-cookie');
+            //await this.$axios.$get('sanctum/csrf-cookie');
             await this.$axios
                 .post(action, data)
                 .then(function (response) {
                     if (response) {
                         self.setDeletedEducations();
                         self.setDeletedWorkExperiences();
-                        self.$router.push('/cv-list');
+                        //self.$router.push('/cv-list');
                     }
                 })
                 .catch(function (error) {

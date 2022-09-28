@@ -62,10 +62,8 @@ class CvController extends Controller
      */
     public function store(StoreCvRequest $request)
     {
-        if(!$request->input('cv')) {
+        if(!$request->has('cv')) {
             return $this->respondNotFound();
-        } else {
-            return $this->tt($request->input('cv'));
         }
 
         // Strip tags, allow some:
@@ -99,10 +97,13 @@ class CvController extends Controller
         ]);
 
         // create Educations
-        $this->educationService->create($request->get('cvEducations'), $cv);
+        if($request->get('cvEducations')) {
+            $this->educationService->create($request->get('cvEducations'), $cv);
+        }
         // create ExperienceService
-        $this->workExperienceService->create($request->get("deletedWorkExperiences"), $cv);
-
+        if($request->get('deletedWorkExperiences')) {
+            $this->workExperienceService->create($request->get("deletedWorkExperiences"), $cv);
+        }
         // Response
         return $this->respondWithSuccess();
     }
@@ -154,14 +155,21 @@ class CvController extends Controller
         Cv::where('id', $cv->id)->update($arrCv);
 
         // update Educations
-        $this->educationService->update($request->get('cvEducations'), $cv);
+        if($request->get('cvEducations')) {
+            $this->educationService->update($request->get('cvEducations'), $cv);
+        }
         // update WorkExperience
-        $this->workExperienceService->update($request->get("cvWorkExperiences"), $cv);
-
+        if($request->get('cvWorkExperiences')) {
+            $this->workExperienceService->update($request->get("cvWorkExperiences"), $cv);
+        }
         // deletedEducations (child of cv update ui)
-        $this->educationService->delete($request->input("deletedEducations"));
+        if($request->get("deletedEducations")) {
+            $this->educationService->delete($request->input("deletedEducations"));
+        }
         // workExperienceService (child of cv update ui)
-        $this->workExperienceService->delete($request->input("deletedWorkExperiences"));
+        if($request->get("deletedWorkExperiences")) {
+            $this->workExperienceService->delete($request->input("deletedWorkExperiences"));
+        }
 
         // Response
         return $this->respondWithSuccess();
