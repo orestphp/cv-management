@@ -301,7 +301,7 @@ export default {
                 }
                 : {
                     cv: this.cv,
-                    cvEducations: this.cv.cvId.education,
+                    cvEducations: this.cv.education,
                     cvWorkExperiences: this.cv.work_experience,
                 };
             let self = this;
