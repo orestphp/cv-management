@@ -290,8 +290,7 @@ export default {
                 return obj.experienceId === this.experienceId
             });
             const experience = Array.isArray(result) ? result[0] : result;
-            console.log(experience);
-            //experience.el.closeDialog(this.experienceId);
+            experience.el.closeDialog(this.experienceId);
             this.dialogExpDelete = false;
         },
         deleteExpItem(experienceId) {
