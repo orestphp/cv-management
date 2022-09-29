@@ -104,8 +104,8 @@ class EducationService extends BaseService
             foreach($data as $k => $v) {
                 $cvEducations[] = Education::create([
                     'institution_name' => $this->request->input("cvEducations.".$k.".institution_name"),
-                    'period_from' => $cv->setDateAttribute($this->request->input("cvEducations.".$k.".period_from")),
-                    'period_to' => $cv->setDateAttribute($this->request->input("cvEducations.".$k.".period_to")),
+                    'period_from' => $cv->formatDate($this->request->input("cvEducations.".$k.".period_from")),
+                    'period_to' => $cv->formatDate($this->request->input("cvEducations.".$k.".period_to")),
                     'faculty' => $this->request->input("cvEducations.".$k.".faculty"),
                     // 'address' => $this->request->input("cvEducations.".$k.".address"),
                     'summary' => $this->request->input("cvEducations.".$k.".summary"),

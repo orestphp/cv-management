@@ -79,8 +79,8 @@ class CvController extends Controller
         // Save data
         $cv = Cv::create([
             'title' => $request->input("cv.title"),
-            'first_name' => $request->input("cv.first_name"),
-            'surname' => $request->input("cv.surname"),
+            'first_name' => $request->input("cv.first_name") ?? '',
+            'surname' => $request->input("cv.surname") ?? '',
             'middle_name' => $request->input("cv.middle_name"),
             'date_of_birth' => $request->input("cv.date_of_birth"),
             'email' => $request->input("cv.email"),

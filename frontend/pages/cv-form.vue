@@ -303,19 +303,19 @@ export default {
                 }
                 : {
                     cv: this.cv,
-                    cvEducations: this.cv.education,
-                    cvWorkExperiences: this.cv.work_experience,
+                    cvEducations: this.cvEducations,
+                    cvWorkExperiences: this.cvWorkExperiences,
                 };
             let self = this;
             // Save all CV
-            //await this.$axios.$get('sanctum/csrf-cookie');
+            await this.$axios.$get('sanctum/csrf-cookie');
             await this.$axios
                 .post(action, data)
                 .then(function (response) {
                     if (response) {
                         self.setDeletedEducations();
                         self.setDeletedWorkExperiences();
-                        //self.$router.push('/cv-list');
+                        self.$router.push('/cv-list');
                     }
                 })
                 .catch(function (error) {

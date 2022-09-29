@@ -29,7 +29,7 @@ class StoreCvRequest extends FormRequest
             'cv.surname' => ['string', 'max:255', 'nullable'],
             'cv.middle_name' => ['string', 'max:255', 'nullable'],
             'cv.date_of_birth' => ['string', 'max:255', 'nullable'],
-            'cv.email' => ['email'],
+            'cv.email' => ['unique:App\Models\Cv', 'email', 'required', 'max:255'],
             'cv.phone' => ['string', 'max:255', 'nullable'],
             'cv.avatar' => ['string', 'max:255', 'nullable'],
             'cv.address' => ['string', 'max:255', 'nullable'],
