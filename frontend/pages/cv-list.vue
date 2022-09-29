@@ -120,13 +120,7 @@ export default {
                 })
                 .catch(function (error) {
                     console.log(error);
-
-                    self.dialog = true;
-                    setTimeout(function () {
-                        self.errorClass = 'error';
-                        document.getElementById('cv-alert-title').innerHTML = 'Error:';
-                        document.getElementById('cv-alert-message').innerHTML = JSON.stringify(error);
-                    }, 0);
+                    window.location.href = '/auth/login';
                 });
         },
 

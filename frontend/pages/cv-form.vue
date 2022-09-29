@@ -9,7 +9,7 @@
                         <v-card-text class="alert-message" id="cv-alert-message"></v-card-text>
                     </v-card>
                 </v-dialog>
-                <v-dialog v-model="dialogDelete" max-width="500px">
+                <v-dialog v-model="dialogEduDelete" max-width="500px">
                     <v-card>
                         <v-card-title class="text-h5">
                             Are you sure you want to delete this item?
@@ -18,6 +18,19 @@
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeEduDelete">Cancel</v-btn>
                             <v-btn color="blue darken-1" text @click="deleteEduItemConfirm">OK</v-btn>
+                            <v-spacer></v-spacer>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogExpDelete" max-width="500px">
+                    <v-card>
+                        <v-card-title class="text-h5">
+                            Are you sure you want to delete this item?
+                        </v-card-title>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" text @click="closeExpDelete">Cancel</v-btn>
+                            <v-btn color="blue darken-1" text @click="deleteExpItemConfirm">OK</v-btn>
                             <v-spacer></v-spacer>
                         </v-card-actions>
                     </v-card>
@@ -113,7 +126,10 @@
                                     </div>
                                     <v-col cols="12">
                                         <v-flex v-for="experience in workExperiences" :key="experience.position">
-                                            <WorkExperienceItem :experience="experience"></WorkExperienceItem>
+                                            <WorkExperienceItem @deleteExperience="deleteExpItem($event)"
+                                                :experience="experience"
+                                                :ref="(el) => { experienceIds.push({experienceId: experience.id, el: el}); }">
+                                            </WorkExperienceItem>
                                         </v-flex>
                                     </v-col>
                                 </v-col>
@@ -164,10 +180,17 @@ export default {
         strDob: "",
         dialog: false,
         errorClass: '',
-        dialogDelete: false,
+        dialogEduDelete: false,
+        dialogExpDelete: false,
+
         educationId: 0,
         educationIds: [],
         educationEl: null,
+
+        experienceId: 0,
+        experienceIds: [],
+        experienceEl: null,
+
         cv: {
             title: '',
             first_name: '',
@@ -225,8 +248,11 @@ export default {
         },
     },
     watch: {
-        dialogDelete(val) {
+        dialogEduDelete(val) {
             val || this.closeEduDelete();
+        },
+        dialogExpDelete(val) {
+            val || this.closeExpDelete();
         },
     },
     created() {
@@ -241,7 +267,7 @@ export default {
         ...mapMutations('app', ['setDeletedEducations', 'setDeletedWorkExperiences']),
         ///////////////////// Delete Education /////////////////////
         closeEduDelete() {
-            this.$nextTick(() => { this.dialogDelete = false; });
+            this.$nextTick(() => { this.dialogEduDelete = false; });
         },
         deleteEduItemConfirm() {
             let result = this.educationIds.filter(obj => {
@@ -249,13 +275,29 @@ export default {
             })
             const education = result[0];
             education.el.closeDialog(this.educationId);
-            this.dialogDelete = false;
+            this.dialogEduDelete = false;
         },
         deleteEduItem(educationId) {
             this.educationId = educationId;
-            this.dialogDelete = true;
+            this.dialogEduDelete = true;
         },
-        //////////////////////////////////////////////////////////////
+        //////////////////// Delete WorkExperiences////////////////////////
+        closeExpDelete() {
+            this.$nextTick(() => { this.dialogExpDelete = false; });
+        },
+        deleteExpItemConfirm() {
+            let result = this.experienceIds.filter(obj => {
+                return obj.experienceId === this.experienceId
+            })
+            const experience = result[0];
+            experience.el.closeDialog(this.experienceId);
+            this.dialogExpDelete = false;
+        },
+        deleteExpItem(experienceId) {
+            this.experienceId = experienceId;
+            this.dialogExpDelete = true;
+        },
+        ///////////////////////////////////////////////////////////////////
         editingCv() {
             const cvId = parseInt(this.$route.query['id']);
             if (cvId) {
@@ -290,7 +332,7 @@ export default {
             const cvId = parseInt(this.$route.query['id']);
             this.cv.date_of_birth = this.strDob ? this.strDob : this.cv.date_of_birth;
             let action = !isNaN(cvId) ? '/api/cv/' + cvId : '/api/cv';
-            if(!isNaN(cvId)) {
+            if (!isNaN(cvId)) {
                 this.initCvByIdFromStore(cvId);
             }
             let data = !isNaN(cvId)
