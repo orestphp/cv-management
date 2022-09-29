@@ -58,9 +58,12 @@ import moment from 'moment';
 
 export default {
     components: { DatePicker },
+    props: ['experience'],
     data: () => ({
         aPeriod: [],
-        exp: {
+        exp: {},
+        expDefault: {
+            temp_id: 0,
             position: '',
             company_name: '',
             company_website: '',
@@ -72,6 +75,16 @@ export default {
         },
         dialog: false,
     }),
+    mounted() {
+        this.$nextTick(function () {
+            if (this.experience) {
+                // received "education" via props
+                this.exp = { ...this.experience };
+            }
+        });
+
+        Object.assign(this.exp, this.expDefault, this.experience);
+    },
     methods: {
         saveWorkExperienceItem() {
             // Format date
@@ -80,10 +93,17 @@ export default {
             this.exp.period_from = this.aPeriod[0];
             this.exp.period_to = this.aPeriod[1];
             this.exp.period = `From ${from} - ${to}`;
-            const experience = this.exp;
 
-            // addWorkExperienceItem
-            this.$emit('addWorkExperienceItem', experience);
+            if (this.exp.position !== '' && (this.exp.id || this.exp.temp_id == this.exp.position)) {
+                // "edit" WorkExperience Item
+                this.$emit('editWorkExperienceItem', this.exp);
+            } else {
+                // "add" WorkExperience Item
+                if(!this.exp.id) {
+                    this.exp.temp_id = this.exp.position;
+                }
+                this.$emit('addWorkExperienceItem', this.exp);
+            }
 
             // Close
             this.close();

@@ -273,7 +273,7 @@ export default {
             let result = this.educationIds.filter(obj => {
                 return obj.educationId === this.educationId
             })
-            const education = result[0];
+            const education = Array.isArray(result) ? result[0] : result;
             education.el.closeDialog(this.educationId);
             this.dialogEduDelete = false;
         },
@@ -289,7 +289,7 @@ export default {
             let result = this.experienceIds.filter(obj => {
                 return obj.experienceId === this.experienceId
             })
-            const experience = result[0];
+            const experience = Array.isArray(result) ? result[0] : result;
             experience.el.closeDialog(this.experienceId);
             this.dialogExpDelete = false;
         },

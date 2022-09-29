@@ -67,6 +67,7 @@ export default {
         aPeriod: [],
         edu: {},
         eduDefault: {
+            temp_id: 0,
             institution_name: '',
             faculty: '',
             //address: '',
@@ -96,13 +97,15 @@ export default {
             this.edu.period_from = this.aPeriod[0];
             this.edu.period_to = this.aPeriod[1];
             this.edu.period = `From ${from} - ${to}`;
-            const cvId = parseInt(this.$route.query['id']);
 
-            if (this.edu.institution_name !== '' && this.edu.id && cvId) {
+            if (this.edu.institution_name !== '' && (this.edu.id || this.edu.temp_id == this.edu.institution_name)) {
                 // "edit" Education Item
                 this.$emit('editEducationItem', this.edu);
             } else {
                 // "add" Education Item
+                if(!this.edu.id) {
+                    this.edu.temp_id = this.edu.institution_name;
+                }
                 this.$emit('addEducationItem', this.edu);
             }
 

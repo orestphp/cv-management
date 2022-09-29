@@ -4,8 +4,11 @@
             <v-col cols="12">
                 <v-dialog v-model="dialog" width="500">
                     <v-card>
-                        <v-card-title class="text-h5 lighten-2 alert-title" v-bind:class="changeDialogColor"
-                            id="cv-alert-title"></v-card-title>
+                        <v-card-title
+                            class="text-h5 lighten-2 alert-title"
+                            v-bind:class="changeDialogColor"
+                            id="cv-alert-title"
+                        ></v-card-title>
                         <v-card-text class="alert-message" id="cv-alert-message"></v-card-text>
                     </v-card>
                 </v-dialog>

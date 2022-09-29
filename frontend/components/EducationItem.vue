@@ -63,7 +63,7 @@ export default {
         }),
     },
     methods: {
-        ...mapMutations('app', ['setCvs', 'setDeletedEducations', 'setDeletedWorkExperiences']),
+        ...mapMutations('app', ['setCvs', 'setDeletedEducations']),
 
         remove(educationId) {
             if (educationId) {
@@ -78,7 +78,9 @@ export default {
             // remove the element from the DOM
             this.$el.parentNode.removeChild(this.$el);
             // deleted education
-            this.setDeletedEducations(educationId);
+            if(Number.isInteger(educationId)) {
+                this.setDeletedEducations(educationId);
+            }
         },
         editEducationHandler(education) {
             console.log('Edit: ', education); // received from "EducationForm" component
@@ -98,6 +100,7 @@ export default {
                                 cv.education[index] = { ...newEducation }; // commit it
                                 this.cvs[cvIndex] = cv;
                                 this.setCvs(this.cvs);
+                                return 1;
                             }
                         });
                     }

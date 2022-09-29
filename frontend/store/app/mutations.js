@@ -4,7 +4,10 @@ export default {
     setColor: (state, value) => (state.color = value),
     toggleDrawer: (state) => (state.drawer = !state.drawer),
     // Cv
-    setCvs: (state, cvs) => (state.cvs = cvs),
+    setCvs: (state, cvs) => {
+        state.cvs = cvs; 
+        //console.log(state.cvs);   
+    },
     setDeletedEducations(state, deletedEducations) {
         if(deletedEducations) {
             state.deletedEducations.push(deletedEducations);
