@@ -1,7 +1,7 @@
 <template>
     <v-card class="card-with-bottom-m">
         <v-toolbar flat dark color="primary" class="custom_cls">
-            <v-btn icon dark @click="remove" class="text-right">
+            <v-btn icon dark @click="remove(experience.id)" class="text-right">
                 <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-card flat class="text-h6 card-title">
