@@ -5,8 +5,7 @@ export default {
     toggleDrawer: (state) => (state.drawer = !state.drawer),
     // Cv
     setCvs: (state, cvs) => {
-        state.cvs = cvs; 
-        //console.log(state.cvs);   
+        state.cvs = cvs;
     },
     setDeletedEducations(state, deletedEducations) {
         if(deletedEducations) {
