@@ -4,16 +4,17 @@
             <v-col cols="12" md="8">
                 <v-dialog v-model="dialog" width="500">
                     <v-card>
-                        <v-card-title class="text-h5 lighten-2 alert-title" v-bind:class="changeDialogColor"
-                            id="cv-alert-title"></v-card-title>
+                        <v-card-title
+                            class="text-h5 lighten-2 alert-title"
+                            v-bind:class="changeDialogColor"
+                            id="cv-alert-title"
+                        ></v-card-title>
                         <v-card-text class="alert-message" id="cv-alert-message"></v-card-text>
                     </v-card>
                 </v-dialog>
                 <v-dialog v-model="dialogEduDelete" max-width="500px">
                     <v-card>
-                        <v-card-title class="text-h5">
-                            Are you sure you want to delete this item?
-                        </v-card-title>
+                        <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeEduDelete">Cancel</v-btn>
@@ -24,9 +25,7 @@
                 </v-dialog>
                 <v-dialog v-model="dialogExpDelete" max-width="500px">
                     <v-card>
-                        <v-card-title class="text-h5">
-                            Are you sure you want to delete this item?
-                        </v-card-title>
+                        <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeExpDelete">Cancel</v-btn>
@@ -64,8 +63,12 @@
                                 </v-col>
 
                                 <v-col cols="12" md="4" class="d-flex">
-                                    <v-select v-model="cv.district" :items="cities" label="District"
-                                        class="purple-input"></v-select>
+                                    <v-select
+                                        v-model="cv.district"
+                                        :items="cities"
+                                        label="District"
+                                        class="purple-input"
+                                    ></v-select>
                                 </v-col>
 
                                 <v-col cols="12" md="4" class="d-flex purple-input">
@@ -97,39 +100,52 @@
                                 </v-col>
 
                                 <v-col cols="12">
-                                    <v-textarea v-model="cv.technology_experience" class="purple-input"
-                                        label="Technology Experience" value="" />
+                                    <v-textarea
+                                        v-model="cv.technology_experience"
+                                        class="purple-input"
+                                        label="Technology Experience"
+                                        value=""
+                                    />
                                 </v-col>
 
                                 <v-col cols="12" class="text-left">
                                     <hr />
                                     <div class="btn-both-v">
-                                        <EducationForm @addEducationItem="listNewEducation($event)"
-                                            ref="educationFormRef">
+                                        <EducationForm
+                                            @addEducationItem="listNewEducation($event)"
+                                            ref="educationFormRef"
+                                        >
                                             + Education
                                         </EducationForm>
                                     </div>
                                     <v-col cols="12">
                                         <v-flex v-for="education in educations" :key="education.institution_name">
-                                            <EducationItem @deleteEducation="deleteEduItem($event)"
+                                            <EducationItem
+                                                @deleteEducation="deleteEduItem($event)"
                                                 :education="education"
-                                                :ref="(el) => { educationIds.push({educationId: education.id, el: el}); }">
-                                            </EducationItem>
+                                                :cvEducations="cvEducations"
+                                                :ref="(el) => (educationIds.push({ educationId: education.id, el: el }))"
+                                            ></EducationItem>
                                         </v-flex>
                                     </v-col>
                                     <hr />
                                     <div class="btn-both-v">
-                                        <WorkExperienceForm @addWorkExperienceItem="listNewWorkExperience($event)"
-                                            ref="experienceFormRef">
+                                        <WorkExperienceForm
+                                            @addWorkExperienceItem="listNewWorkExperience($event)"
+                                            ref="experienceFormRef"
+                                        >
                                             + Work Experience
                                         </WorkExperienceForm>
                                     </div>
                                     <v-col cols="12">
                                         <v-flex v-for="experience in workExperiences" :key="experience.position">
-                                            <WorkExperienceItem @deleteExperience="deleteExpItem($event)"
+                                            <WorkExperienceItem
+                                                @deleteExperience="deleteExpItem($event)"
                                                 :experience="experience"
-                                                :ref="(el) => { experienceIds.push({experienceId: experience.id, el: el}); }">
-                                            </WorkExperienceItem>
+                                                :ref="
+                                                    (el) => (experienceIds.push({ experienceId: experience.id, el: el }))
+                                                "
+                                            ></WorkExperienceItem>
                                         </v-flex>
                                     </v-col>
                                 </v-col>
@@ -177,7 +193,7 @@ export default {
     middleware: 'auth',
     components: { EducationForm, WorkExperienceForm, DobDatePicker, EducationItem, WorkExperienceItem },
     data: () => ({
-        strDob: "",
+        strDob: '',
         dialog: false,
         errorClass: '',
         dialogEduDelete: false,
@@ -185,11 +201,11 @@ export default {
 
         educationId: 0,
         educationIds: [],
-        educationEl: null,
+        tempEducationDelete: {},
 
         experienceId: 0,
         experienceIds: [],
-        experienceEl: null,
+        tempExperienceDelete: {},
 
         cv: {
             title: '',
@@ -234,9 +250,11 @@ export default {
     computed: {
         ...mapState('app', {
             cvs: (state) => _.cloneDeep(state.cvs),
-            deletedEducations: (state) => _.cloneDeep(state.deletedEducations),
-            deletedWorkExperiences: (state) => _.cloneDeep(state.deletedWorkExperiences),
+            deletedEducations: (state) => state.deletedEducations,
+            deletedWorkExperiences: (state) => state.deletedWorkExperiences,
         }),
+        ...mapGetters('app', ['getCv', 'getDeletedEducations', 'getDeletedWorkExperiences']),
+
         changeDialogColor() {
             return this.errorClass;
         },
@@ -247,14 +265,6 @@ export default {
             return this.cvWorkExperiences;
         },
     },
-    watch: {
-        dialogEduDelete(val) {
-            val || this.closeEduDelete();
-        },
-        dialogExpDelete(val) {
-            val || this.closeExpDelete();
-        },
-    },
     created() {
         this.editingCv();
     },
@@ -262,40 +272,80 @@ export default {
         this.changeDialogColor;
     },
     methods: {
-        ...mapGetters('app', ['getCv', 'getDeletedEducations', 'getDeletedWorkExperiences']),
-
         ...mapMutations('app', ['setDeletedEducations', 'setDeletedWorkExperiences']),
         ///////////////////// Delete Education /////////////////////
-        closeEduDelete() {
-            this.$nextTick(() => { this.dialogEduDelete = false; });
+        deleteEduItem(education) {
+            this.educationId = education.id;
+            this.tempEducationDelete = education;
+            this.dialogEduDelete = true;
         },
         deleteEduItemConfirm() {
-            let result = this.educationIds.filter(obj => {
-                return obj.educationId === this.educationId
+            let self = this;
+            if(typeof this.tempEducationDelete.temp_id !== 'undefined') {
+                // delete the one from 'cvEducations'
+                this.cvEducations.splice(this.cvEducations.findIndex(function(ed){
+                    return ed.temp_id === self.tempEducationDelete.temp_id;
+                }), 1);
+            } else {
+                // delete the one from 'cvEducations')
+                this.cvEducations.splice(this.cvEducations.findIndex(function(ed){
+                    return ed.id === self.tempEducationDelete.id;
+                }), 1);
+            }
+            // close html element
+            let result = this.educationIds.filter((obj) => {
+                return obj.educationId === this.educationId;
             });
             const education = Array.isArray(result) ? result[0] : result;
             education.el.closeDialog(this.educationId);
+            this.tempEducationDelete = {};
             this.dialogEduDelete = false;
         },
-        deleteEduItem(educationId) {
-            this.educationId = educationId;
-            this.dialogEduDelete = true;
+        closeEduDelete() {
+            this.$nextTick(() => {
+                this.dialogEduDelete = false;
+            });
         },
         //////////////////// Delete WorkExperiences////////////////////////
-        closeExpDelete() {
-            this.$nextTick(() => { this.dialogExpDelete = false; });
+        deleteExpItem(experience) {
+            this.experienceId = experience.id;
+            if (typeof experience.temp_id !== 'undefined' && experience.temp_id !== '') {
+                this.tempExperienceDelete = experience;
+            }
+            this.dialogExpDelete = true;
         },
         deleteExpItemConfirm() {
-            let result = this.experienceIds.filter(obj => {
-                return obj.experienceId === this.experienceId
+            let self = this;
+            if(this.tempExperienceDelete.temp_id) {
+                // delete the one from 'cvEducations')
+                this.cvWorkExperiences.splice(
+                    this.cvWorkExperiences.findIndex(
+                        (ex) => ex.temp_id === self.tempExperienceDelete.temp_id
+                    ),
+                    1
+                );
+            } else {
+                // delete the one from 'cvEducations')
+                this.cvWorkExperiences.splice(
+                    this.cvWorkExperiences.findIndex(
+                        (ex) => ex.id === self.tempExperienceDelete.id
+                    ),
+                    1
+                );
+            }
+            // delete html element
+            let result = this.experienceIds.filter((obj) => {
+                return obj.experienceId === this.experienceId;
             });
             const experience = Array.isArray(result) ? result[0] : result;
             experience.el.closeDialog(this.experienceId);
+            this.tempExperienceDelete = {};
             this.dialogExpDelete = false;
         },
-        deleteExpItem(experienceId) {
-            this.experienceId = experienceId;
-            this.dialogExpDelete = true;
+        closeExpDelete() {
+            this.$nextTick(() => {
+                this.dialogExpDelete = false;
+            });
         },
         ///////////////////////////////////////////////////////////////////
         editingCv() {
@@ -309,7 +359,7 @@ export default {
         initCvByIdFromStore(id) {
             this.cvs.forEach((cv) => {
                 if (cv.id === id) {
-                    return this.cv = cv;
+                    return (this.cv = cv);
                 }
             });
         },
@@ -337,17 +387,17 @@ export default {
             }
             let data = !isNaN(cvId)
                 ? {
-                    cv: this.cv,
-                    cvEducations: this.cv.education,
-                    cvWorkExperiences: this.cv.work_experience,
-                    deletedEducations: this.deletedEducations,
-                    deletedWorkExperiences: this.deletedWorkExperiences,
-                }
+                      cv: this.cv,
+                      cvEducations: this.cvEducations,
+                      cvWorkExperiences: this.cvWorkExperiences,
+                      deletedEducations: this.deletedEducations,
+                      deletedWorkExperiences: this.deletedWorkExperiences,
+                  }
                 : {
-                    cv: this.cv,
-                    cvEducations: this.cvEducations,
-                    cvWorkExperiences: this.cvWorkExperiences,
-                };
+                      cv: this.cv,
+                      cvEducations: this.cvEducations,
+                      cvWorkExperiences: this.cvWorkExperiences,
+                  };
             let self = this;
             // Save all CV
             await this.$axios.$get('sanctum/csrf-cookie');

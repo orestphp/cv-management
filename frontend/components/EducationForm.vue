@@ -70,7 +70,6 @@ export default {
             temp_id: 0,
             institution_name: '',
             faculty: '',
-            //address: '',
             website: '',
             summary: '',
             period: '',
@@ -80,13 +79,10 @@ export default {
         dialog: false,
     }),
     mounted() {
-        this.$nextTick(function () {
-            if (this.education) {
-                // received "education" via props
-                this.edu = { ...this.education };
-            }
-        });
-
+        if (this.education) {
+            // received "education" via props
+            this.edu = { ...this.education };
+        }
         Object.assign(this.edu, this.eduDefault, this.education);
     },
     methods: {

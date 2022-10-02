@@ -1,7 +1,7 @@
 <template>
     <v-card class="card-with-bottom-m">
         <v-toolbar flat dark color="primary" class="custom_cls">
-            <v-btn icon dark @click="remove(experience.id)" class="text-right">
+            <v-btn icon dark @click="remove(experience)" class="text-right">
                 <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-card flat class="text-h6 card-title">
@@ -79,12 +79,8 @@ export default {
     methods: {
         ...mapMutations('app', ['setCvs', 'setDeletedWorkExperiences']),
 
-        remove(experienceId) {
-            if (experienceId) {
-                this.$emit('deleteExperience', experienceId);
-            } else {
-                this.closeDialog(experienceId);
-            }
+        remove(experience) {
+            this.$emit('deleteExperience', experience);
         },
         closeDialog(experienceId) {
             // destroy the vue listeners, etc
@@ -92,7 +88,7 @@ export default {
             // remove the element from the DOM
             this.$el.parentNode.removeChild(this.$el);
             // deleted experience
-            if(Number.isInteger(experienceId)) {
+            if (Number.isInteger(experienceId)) {
                 this.setDeletedWorkExperiences(experienceId);
             }
         },
@@ -100,10 +96,10 @@ export default {
             console.log('Edit: ', experience); // received from "WorkExperienceForm" component
             if (typeof experience.position !== 'undefined' && experience.position !== '') {
                 this.exp = experience;
-                this.setExperienceStore(this.experience.id, experience);
+                this.updateExperienceStore(this.experience.id, experience);
             }
         },
-        setExperienceStore(expId, newExperience) {
+        updateExperienceStore(expId, newExperience) {
             // had todo it in "WorkExperienceForm" (child) cos it`s B in A, B, C herarchy
             const cvId = parseInt(this.$route.query['id']);
             this.cvs.forEach((cv, cvIndex) => {

@@ -76,13 +76,10 @@ export default {
         dialog: false,
     }),
     mounted() {
-        this.$nextTick(function () {
-            if (this.experience) {
-                // received "education" via props
-                this.exp = { ...this.experience };
-            }
-        });
-
+        if (this.experience) {
+            // received "experience" via props
+            this.exp = { ...this.experience };
+        }
         Object.assign(this.exp, this.expDefault, this.experience);
     },
     methods: {

@@ -1,12 +1,16 @@
 <template>
     <v-card class="card-with-bottom-m">
         <v-toolbar flat dark color="primary" class="custom_cls">
-            <v-btn icon dark @click="remove(education.id)" class="text-right">
+            <v-btn icon dark @click="remove(education)" class="text-right">
                 <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-card flat class="text-h6 card-title">
-                <EducationForm v-if="education" :education="education"
-                    @editEducationItem="editEducationHandler($event)" ref="educationFormRef">
+                <EducationForm
+                    v-if="education"
+                    :education="education"
+                    @editEducationItem="editEducationHandler($event)"
+                    ref="educationFormRef"
+                >
                     {{ !edu.institution_name ? education.institution_name : edu.institution_name }}
                 </EducationForm>
             </v-card>
@@ -65,12 +69,8 @@ export default {
     methods: {
         ...mapMutations('app', ['setCvs', 'setDeletedEducations']),
 
-        remove(educationId) {
-            if (educationId) {
-                this.$emit('deleteEducation', educationId);
-            } else {
-                this.closeDialog(educationId);
-            }
+        remove(education) {
+            this.$emit('deleteEducation', education);
         },
         closeDialog(educationId) {
             // destroy the vue listeners, etc
@@ -78,7 +78,7 @@ export default {
             // remove the element from the DOM
             this.$el.parentNode.removeChild(this.$el);
             // deleted education
-            if(Number.isInteger(educationId)) {
+            if (Number.isInteger(educationId)) {
                 this.setDeletedEducations(educationId);
             }
         },
@@ -86,10 +86,10 @@ export default {
             console.log('Edit: ', education); // received from "EducationForm" component
             if (typeof education.institution_name !== 'undefined' && education.institution_name !== '') {
                 this.edu = education;
-                this.setEducationInStore(this.education.id, education);
+                this.updateEducationInStore(this.education.id, education);
             }
         },
-        setEducationInStore(eduId, newEducation) {
+        updateEducationInStore(eduId, newEducation) {
             // had todo it in "EducationForm" (child) cos it`s B in A, B, C herarchy
             const cvId = parseInt(this.$route.query['id']);
             this.cvs.forEach((cv, cvIndex) => {
