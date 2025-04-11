@@ -124,7 +124,7 @@
                                                 @deleteEducation="deleteEduItem($event)"
                                                 :education="education"
                                                 :cvEducations="cvEducations"
-                                                :ref="(el) => (educationIds.push({ educationId: education.id, el: el }))"
+                                                :ref="(el) => educationIds.push({ educationId: education.id, el: el })"
                                             ></EducationItem>
                                         </v-flex>
                                     </v-col>
@@ -143,7 +143,7 @@
                                                 @deleteExperience="deleteExpItem($event)"
                                                 :experience="experience"
                                                 :ref="
-                                                    (el) => (experienceIds.push({ experienceId: experience.id, el: el }))
+                                                    (el) => experienceIds.push({ experienceId: experience.id, el: el })
                                                 "
                                             ></WorkExperienceItem>
                                         </v-flex>
@@ -281,16 +281,22 @@ export default {
         },
         deleteEduItemConfirm() {
             let self = this;
-            if(typeof this.tempEducationDelete.temp_id !== 'undefined') {
+            if (typeof this.tempEducationDelete.temp_id !== 'undefined') {
                 // delete the one from 'cvEducations'
-                this.cvEducations.splice(this.cvEducations.findIndex(function(ed){
-                    return ed.temp_id === self.tempEducationDelete.temp_id;
-                }), 1);
+                this.cvEducations.splice(
+                    this.cvEducations.findIndex(function (ed) {
+                        return ed.temp_id === self.tempEducationDelete.temp_id;
+                    }),
+                    1
+                );
             } else {
                 // delete the one from 'cvEducations')
-                this.cvEducations.splice(this.cvEducations.findIndex(function(ed){
-                    return ed.id === self.tempEducationDelete.id;
-                }), 1);
+                this.cvEducations.splice(
+                    this.cvEducations.findIndex(function (ed) {
+                        return ed.id === self.tempEducationDelete.id;
+                    }),
+                    1
+                );
             }
             // close html element
             let result = this.educationIds.filter((obj) => {
@@ -316,20 +322,16 @@ export default {
         },
         deleteExpItemConfirm() {
             let self = this;
-            if(this.tempExperienceDelete.temp_id) {
+            if (this.tempExperienceDelete.temp_id) {
                 // delete the one from 'cvEducations')
                 this.cvWorkExperiences.splice(
-                    this.cvWorkExperiences.findIndex(
-                        (ex) => ex.temp_id === self.tempExperienceDelete.temp_id
-                    ),
+                    this.cvWorkExperiences.findIndex((ex) => ex.temp_id === self.tempExperienceDelete.temp_id),
                     1
                 );
             } else {
                 // delete the one from 'cvEducations')
                 this.cvWorkExperiences.splice(
-                    this.cvWorkExperiences.findIndex(
-                        (ex) => ex.id === self.tempExperienceDelete.id
-                    ),
+                    this.cvWorkExperiences.findIndex((ex) => ex.id === self.tempExperienceDelete.id),
                     1
                 );
             }

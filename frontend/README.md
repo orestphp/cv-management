@@ -2,27 +2,25 @@
 
 > Nuxt.js + Vuetify.js + Material Dashboard
 
-![alt text](http://rekryt.ru/files/nuxt-vuetify-dashboard.png)
-
 ## Build Setup
 
 ```shell
 # install dependencies
-$ npm install # Or yarn install
+$ yarn install # Or yarn install
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+$ yarn dev
 ```
 Open http://localhost:3000
 
 ## Production
 ```shell
 # build for production and launch server
-$ npm run build
-$ npm start
+$ yarn build
+$ yarn start
 
 # or generate static project
-# npm run generate
+# yarn run generate
 ```
 
 ## Docker

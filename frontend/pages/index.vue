@@ -277,14 +277,14 @@
 </template>
 
 <script>
-import Editor from '../components/helper/Editor.vue';
+import Editor from '~/components/helper/HelperEditor.vue';
 
 export default {
     middleware: 'auth',
     components: { Editor },
     data() {
         return {
-            editorText: '<h2>Material Dashboard</h2><blockquote><p>made by DevIT</p>',
+            editorText: '<h2>Material Dashboard</h2><blockquote>',
             dailySalesChart: {
                 data: {
                     labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],

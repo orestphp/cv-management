@@ -1,4 +1,4 @@
-module.exports = {
+const wp = {
     env: {
         browser: true,
         es6: true,
@@ -15,6 +15,7 @@ module.exports = {
     },
     plugins: ['vue'],
     rules: {
+        'vue/multi-word-component-names': 'off',
         'no-console': 'off',
         'vue/multiline-html-element-content-newline': [
             2,
@@ -26,3 +27,7 @@ module.exports = {
         ],
     },
 };
+
+console.log(wp.rules);
+
+module.exports = wp;

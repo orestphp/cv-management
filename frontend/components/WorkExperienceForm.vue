@@ -96,7 +96,7 @@ export default {
                 this.$emit('editWorkExperienceItem', this.exp);
             } else {
                 // "add" WorkExperience Item
-                if(!this.exp.id) {
+                if (!this.exp.id) {
                     this.exp.temp_id = this.exp.position;
                 }
                 this.$emit('addWorkExperienceItem', this.exp);

@@ -7,10 +7,11 @@
     "require": {
         "php": "^8.0.2",
         "f9webltd/laravel-api-response-helpers": "^1.5",
+        "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/fortify": "^1.13",
+        "laravel/fortify": "^1.19",
         "laravel/framework": "^9.19",
-        "laravel/sanctum": "^3.0",
+        "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.7"
     },
     "require-dev": {

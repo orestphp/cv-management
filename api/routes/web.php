@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/**
- * This application is designed purely for REST API
- */
-
 Route::get('/', function () {
     return view('welcome');
 });

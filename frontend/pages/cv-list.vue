@@ -35,9 +35,11 @@
                                 </v-dialog>
                             </v-toolbar>
                         </template>
-                        <template v-slot:[`item.actions`]="{ item }" class="cv-actions">
-                            <v-icon small class="mr-2 mt-3" @click="editItem(item)">mdi-pencil</v-icon>
-                            <v-icon small class="mt-3" @click="deleteItem(item)">mdi-delete</v-icon>
+                        <template v-slot:[`item.actions`]="{ item }">
+                            <div class="cv-actions">
+                                <v-icon small class="mr-2 mt-3" @click="editItem(item)">mdi-pencil</v-icon>
+                                <v-icon small class="mt-3" @click="deleteItem(item)">mdi-delete</v-icon>
+                            </div>
                         </template>
                         <template v-slot:no-data>
                             <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -54,7 +56,7 @@ import { mapMutations } from 'vuex';
 
 export default {
     data: () => ({
-        middleware: 'auth',
+        //middleware: 'auth',
         dialog: false,
         errorClass: '',
         dialogDelete: false,
@@ -93,6 +95,9 @@ export default {
 
     created() {
         this.initialize();
+        console.log('storage auth: ' + this.$auth.$storage.getState('auth'));
+        console.log('user: ' + this.$auth.user);
+        console.log('loggedIn: ' + this.$auth.loggedIn);
     },
 
     methods: {
@@ -100,10 +105,11 @@ export default {
 
         async initialize() {
             let self = this;
-            await this.$axios.$get('sanctum/csrf-cookie');
+            //await this.$axios.$get('sanctum/csrf-cookie', { withCredentials: true });
             await this.$axios
-                .get('/api/cv')
+                .get('/api/cv', { withCredentials: true })
                 .then(function (response) {
+                    console.log(response);
                     if (response.data) {
                         const tempCvs = response.data;
                         self.setCvs(tempCvs); // store
@@ -122,8 +128,9 @@ export default {
                     }
                 })
                 .catch(function (error) {
-                    console.log(error);
-                    window.location.href = '/auth/login';
+                    console.log('error:');
+                    console.error(error);
+                    window.location.href = '/auth/auth-login';
                 });
         },
 

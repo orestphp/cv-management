@@ -35,10 +35,10 @@ class EducationService extends BaseService
      *
      * @return array
      */
-    public function update(array $data = [], Cv $cv): array
+    public function update(array $data, Cv $cv): array
     {
         $cvEducations = [];
-        if($data) {
+        if($data && $cv) {
             foreach($data as $input) {
 
                 if(isset($input['id']) && $input['id']) {
@@ -97,7 +97,7 @@ class EducationService extends BaseService
      *
      * @return array
      */
-    public function create(array $data = [], Cv $cv) : array
+    public function create(array $data, Cv $cv) : array
     {
         $cvEducations = [];
         if($data) {

@@ -99,7 +99,7 @@ export default {
                 this.$emit('editEducationItem', this.edu);
             } else {
                 // "add" Education Item
-                if(!this.edu.id) {
+                if (!this.edu.id) {
                     this.edu.temp_id = this.edu.institution_name;
                 }
                 this.$emit('addEducationItem', this.edu);

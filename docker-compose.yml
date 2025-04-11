@@ -3,6 +3,10 @@ version: '3.8'
 volumes:
   db-data:
 
+networks:
+  cv-network:
+    driver: bridge
+
 services:
   # php(api)
   app:
@@ -10,6 +14,8 @@ services:
       context: ./docker/php
     volumes:
       - $BACKEND_DIR:/laravel
+    networks:
+      - cv-network
 
   # nginx
   web:
@@ -23,6 +29,8 @@ services:
     working_dir: $NGINX_DIR
     depends_on:
       - app
+    networks:
+      - cv-network
 
   # MySQL
   db:
@@ -37,20 +45,27 @@ services:
       - db-data:/var/lib/mysql
     ports:
       - $DB_PORT:3306
+    networks:
+      - cv-network
 
-  # node,nuxt(front)
+  # node, nuxt(front)
   front:
     build:
       context: .
-      dockerfile: ./docker/node/Dockerfile
-    command: yarn dev
+      dockerfile: docker/node/Dockerfile
+    command: yarn run dev
     volumes:
       - ./frontend:/app
+      - /app/node_modules  # Prevents overwriting node_modules inside the container
+    working_dir: /app
     ports:
       - '$FRONT_PORT:3000'
       - '$STORYBOOK_PORT:6006'
     init: true
     restart: on-failure
+    user: "node"
+    networks:
+      - cv-network
 
   #phpmyadmin
   phpmyadmin:
@@ -67,3 +82,5 @@ services:
       - 8081:80
     depends_on:
       - db
+    networks:
+      - cv-network

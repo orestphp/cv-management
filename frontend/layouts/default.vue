@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import Drawer from '@/components/core/Drawer';
-import Footer from '@/components/core/Footer';
-import AppBar from '@/components/core/AppBar';
-import View from '@/components/core/View';
+import CoreDrawer from '~/components/core/CoreDrawer';
+import CoreFooter from '~/components/core/CoreFooter';
+import AppBar from '~/components/core/AppBar';
+import CoreView from '~/components/core/CoreView';
 export default {
-    middleware: 'auth',
+    //middleware: 'auth',
     props: {
         source: String,
     },
@@ -21,10 +21,10 @@ export default {
         drawer: null,
     }),
     components: {
-        CoreDrawer: Drawer,
-        CoreFooter: Footer,
+        CoreDrawer: CoreDrawer,
+        CoreFooter: CoreFooter,
         CoreAppBar: AppBar,
-        CoreView: View,
+        CoreView: CoreView,
     },
 };
 </script>

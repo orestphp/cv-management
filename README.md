@@ -1,41 +1,56 @@
 # Nuxt - Laravel
 
-## Usage
+## Technologies Used
 
+   - FROM node:20.9.0-alpine
+   - FROM mysql:8.0
+   - FROM php:8.1.8-fpm-buster
+   - FROM nginx:1.18-alpine
+   - Nuxt2/Vue2
+   - Laravel 9
+   - xdebug 2
+
+## Install
+
+After 'git clone', inside repo:
 ```
 $ make init
-$ make dev
+```
+```
+$ make up
 ```
 
-### nuxt
+NOTE: If you get "php artisan migrate" error, just do it manualy:
+```
+docker-compose exec app php artisan migrate:fresh --seed
+```
 
+### frontend
 http://127.0.0.1:3000/
 
 ### api
-
-http://127.0.0.1:8001/
+http://localhost:8001/
 
 ### phpmyadmin
-
 http://127.0.0.1:8081/
+   - `user`
+   - `password`
 
 ## Development
 
-1. There are two options to run "frontend" in "front" container:
-   1) Using `make dev`
-   2) `docker-compose down` and out of container, if you need console messages and to see runtime errors/warnings)
-   - `cd /var/www/rms/frontend`
-   - `npm run dev` (for convenient console use)
-   Then in new terminal:
-   - `cd /var/www/rms/`
-   - `docker-compose up -d`
-     - ignore: Creating rms_front_1 ... error
-2. Access: 
-   - http://localhost:3000
-   - admin@admin.com
-   - password
-3. Password can be changed via User Profile or via Tinker:
+Password can be created/changed via Tinker:
    - `docker exec -it <container ID> php artisan tinker`
-   - `$user = App\User::where('email', 'admin@admin.com')->first();`
+   - `$user = App\Models\User::where('email', 'admin@admin.com')->first();`
    - `$user->password = Hash::make('pass');`
    - `$user->save();`
+
+NOTE: In this version 2, user can be created via Tinker only
+
+## Command Glossary
+
+   - `make down`
+   - `make up`
+   - `make dev`
+   - `docker ps` - list all running containers
+   - `docker exec -it <container_id> sh` - Enter container
+   - `docker logs -f <container_id>` - see incomming logs for container

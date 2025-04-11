@@ -23,6 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/debug-user', function () {
+    return response()->json([
+        'user' => Auth::user(),
+        'session' => session()->all(),
+    ]);
+});
+
 // for authorised users
 Route::group(['middleware' => ['auth:sanctum']], function() {
 

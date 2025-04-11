@@ -1,18 +1,29 @@
-FROM node:14.15.3-alpine
+FROM node:20.9.0-alpine
 
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1
-RUN apk update
-RUN apk add build-base
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
+RUN apk update && \
+    apk add --no-cache build-base python3 py3-pip && \
+    ln -sf python3 /usr/bin/python && \
+    pip3 install --no-cache-dir --upgrade pip setuptools
 
-COPY ./frontend/package*.json ./
-RUN npm install
+# Clean up Yarn installation conflicts
+RUN rm -f /usr/local/bin/yarnpkg && \
+    rm -f /usr/local/bin/yarn && \
+    npm install -g yarn@1.21.1
 
-ENV HOST 0.0.0.0
-EXPOSE 3000
+# Ensure user 'node' is used
+RUN chown -R node:node /app
+USER node
 
-CMD npm run dev
+# Copy package.json and install dependencies before copying full code
+COPY --chown=node:node frontend/package.json frontend/yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# Copy the rest of the frontend source code
+COPY --chown=node:node frontend ./
+
+RUN yarn install
+
+CMD ["yarn", "run", "dev"]

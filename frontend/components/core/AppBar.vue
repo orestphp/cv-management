@@ -32,7 +32,7 @@
                     <v-card>
                         <v-list dense>
                             <v-list-item v-for="notification in notifications" :key="notification" @click="onClick">
-                                <v-list-item-title v-text="notification" />
+                                <v-list-item-title>{{ notification }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-card>
@@ -62,6 +62,10 @@
 import { mapMutations } from 'vuex';
 
 export default {
+    props: {
+        notification: String,
+    },
+
     data: () => ({
         notifications: [
             'Mike, John responded to your email',
@@ -90,6 +94,7 @@ export default {
         this.onResponsiveInverted();
         window.addEventListener('resize', this.onResponsiveInverted);
     },
+
     beforeDestroy() {
         window.removeEventListener('resize', this.onResponsiveInverted);
     },

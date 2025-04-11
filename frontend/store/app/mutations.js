@@ -6,14 +6,14 @@ export default {
     // Cv
     setCvs: (state, cvs) => (state.cvs = cvs),
     setDeletedEducations(state, deletedEducations) {
-        if(deletedEducations) {
+        if (deletedEducations) {
             state.deletedEducations.push(deletedEducations);
         } else {
             state.deletedEducations = [];
         }
     },
     setDeletedWorkExperiences(state, deletedWorkExperiences) {
-        if(deletedWorkExperiences) {
+        if (deletedWorkExperiences) {
             state.deletedWorkExperiences.push(deletedWorkExperiences);
         } else {
             state.deletedWorkExperiences = [];

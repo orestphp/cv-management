@@ -16,21 +16,20 @@ return [
     */
     'paths' => [
         'api/*',
+        'sanctum/*',
         'login',
         'logout',
         'register',
         'user/password',
         'forgot-password',
         'reset-password',
-        'sanctum/*',
         'user/profile-information',
         'email/verification-notification',
-        'hello',
     ],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://127.0.0.1:3000', 'http://localhost:3000'],
 
     'allowed_origins_patterns' => [],
 

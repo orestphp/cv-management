@@ -37,10 +37,10 @@ class WorkExperienceService extends BaseService
      *
      * @return array
      */
-    public function update(array $data = [], Cv $cv): array
+    public function update(array $data, Cv $cv): array
     {
         $cvWorkExperiences = [];
-        if($data) {
+        if($data && $cv) {
             foreach($data as $input) {
                 if(isset($input['id']) && $input['id']) {
                     $arrWorkExperiences = [
@@ -98,10 +98,10 @@ class WorkExperienceService extends BaseService
      *
      * @return array
      */
-    public function create(array $data = [], $cv): array
+    public function create(array $data, $cv): array
     {
         $cvWorkExperiences = [];
-        if($this->request->get('cvWorkExperiences')) {
+        if($data && $cv && $this->request->get('cvWorkExperiences')) {
             foreach($data as $k => $v) {
                 $cvWorkExperiences[] = WorkExperience::create([
                     'position' => $this->request->input("cvWorkExperiences.".$k.".position"),

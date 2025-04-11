@@ -1,7 +1,13 @@
-module.exports = {
-    /*
-     ** Headers of the page
-     */
+export default {
+    server: {
+        host: '0.0.0.0', // Allow external access
+        port: 3000,
+    },
+    runtimeConfig: {
+        public: {
+            apiBase: process.env.API_BASE_URL || 'http://app:8001', // Change localhost to "app"
+        },
+    },
     head: {
         title: 'nuxt-vuetify-dashboard',
         meta: [
@@ -31,19 +37,11 @@ module.exports = {
         '~/plugins/chartist.js',
         '~/plugins/components.js',
         { src: '~/plugins/ckeditor.js', mode: 'client' },
-        // { src: '~/plugins/vuex-persist.js', mode: 'client' } // gives Err: 
-        /*
-        [Vue warn]: The client-side rendered virtual DOM tree is not matching server-rendered content. This is likely caused by incorrect HTML markup ..
-        */
+        // '~/plugins/request-logger.js',
+        // { src: '~/plugins/vuex-persist.js', mode: 'client' } // gives Err:
     ],
     css: ['~/assets/less/main.less'],
-    /*
-     ** Customize the progress bar color
-     */
     loading: { color: '#3B8070' },
-    /*
-     ** Build configuration
-     */
     build: {
         extractCSS: true,
         optimization: {
@@ -75,23 +73,10 @@ module.exports = {
         transpile: [/^vuetify/],
         postcss: null,
     },
-    /*
-     ** Nuxt.js dev-modules
-     */
-    buildModules: [
-        // Doc: https://github.com/nuxt-community/eslint-module
-        '@nuxtjs/eslint-module',
-    ],
-    /*
-     ** Nuxt.js modules
-     */
+    buildModules: ['@nuxtjs/eslint-module'],
     modules: ['@nuxtjs/axios', '@nuxtjs/auth-next'],
-    /*
-     ** Axios module configuration
-     ** See https://axios.nuxtjs.org/options
-     */
     axios: {
-        baseURL: 'http://localhost:8001/',
+        baseURL: 'http://localhost:8001',
         credentials: true,
     },
     auth: {
@@ -100,19 +85,19 @@ module.exports = {
                 provider: 'laravel/sanctum',
                 url: 'http://localhost:8001',
                 endpoints: {
-                    login: { url: '/login', method: 'post' },
+                    login: { url: '/login', method: 'post' }, // Corrected line
                     logout: { url: '/logout', method: 'post' },
                     user: { url: '/api/user', method: 'get' },
                 },
                 user: {
-                    property: false,
+                    property: false, // Laravel returns user object directly
                 },
             },
         },
         redirect: {
-            login: '/auth/login',
-            logout: '/auth/login',
-            home: '/cv-list'
+            login: '/auth/auth-login',
+            logout: '/auth/auth-login',
+            home: '/',
         },
     },
 };
